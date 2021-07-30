@@ -6,8 +6,10 @@ logger = logging.getLogger(__name__)
 
 class DisappearingElementsPage(Browser):
     def __init__(self, **kwargs):
-        self._url = "http://the-internet.herokuapp.com/disappearing_elements"
+        self.url = "http://the-internet.herokuapp.com/disappearing_elements"
         super().__init__(**kwargs)
-        self.get_page(self._url)
+        self.go_to_page()
 
-    
+    def go_to_page(self):
+        """Go to the Disappearing Elements page"""
+        self.get_page(self.url)

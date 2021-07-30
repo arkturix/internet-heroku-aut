@@ -6,13 +6,19 @@ logger = logging.getLogger(__name__)
 
 class LoginPage(Browser):
     def __init__(self, **kwargs):
-        self._url = "http://the-internet.herokuapp.com/login"
+        self.url = "http://the-internet.herokuapp.com/login"
         super().__init__(**kwargs)
-        self.get_page(self._url)
+        self.go_to_page()
+
+    def go_to_page(self):
+        """Go to the Login page"""
+        self.get_page(self.url)
 
     def action_is_successful(self) -> bool:
         """Determine if an action is succesfful based on presence of success banner"""
-        success_banner_elem = self.driver.find_element_by_css_selector("#flash.flash.success")
+        success_banner_elem = self.driver.find_element_by_css_selector(
+            "#flash.flash.success"
+        )
         return success_banner_elem.is_displayed()
 
     def fill_username(self, username: str):
@@ -41,11 +47,18 @@ class LoginPage(Browser):
         return self.action_is_successful()
 
     def login_success_message(self):
-        success_banner_elem = self.driver.find_element_by_css_selector("#flash.flash.success")
+        success_banner_elem = self.driver.find_element_by_css_selector(
+            "#flash.flash.success"
+        )
         if success_banner_elem.is_displayed():
             logger.debug(f"Success message displayed: {success_banner_elem.text}")
             return success_banner_elem.text
         return None
+
+    def login_failure(self):
+        """Determine if login failed by presence of error banner"""
+        error_banner_elem = self.driver.find_element_by_id("#flash.flash.error")
+        return error_banner_elem.is_displayed()
 
     def get_error_message(self):
         """Get error message on failure"""
@@ -59,7 +72,7 @@ class LoginPage(Browser):
     def click_logout_button(self):
         """Click on the logout button"""
         logger.debug("Clicking the logout button")
-        self.driver.find_element_by_css_selector('a.button.secondary.radius').click()
+        self.driver.find_element_by_css_selector("a.button.secondary.radius").click()
 
     def logout_success(self):
         """Determine if logout is successful"""

@@ -1,7 +1,5 @@
 # Base class implementing Selenium
-from os import PathLike
 from requests.models import HTTPError
-import selenium
 from selenium import webdriver
 import platform
 import subprocess
