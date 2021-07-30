@@ -45,7 +45,7 @@ class Browser:
 
         logger.info("Starting driver...")
         self.driver = webdriver.Chrome(
-            executable_path=self._driver_file,
+            executable_path=self._driver_file.__str__(),
             options=driver_options,
             desired_capabilities=driver_capabilities,
             service_args=["--verbose"],
@@ -99,13 +99,14 @@ class Browser:
             driver_filename = "chromedriver.exe"
         dl_zip_filename = Path(dl_url).name
         dl_zip_file = self._driver_parent_dir / dl_zip_filename
+        if dl_zip_file.exists():
+            dl_zip_file.unlink()
         self._driver_parent_dir.mkdir(exist_ok=True)
 
         # Download the zip file
         response = requests.get(dl_url, stream=True)
         with dl_zip_file.open('wb') as zf:
-            for chunk in response.iter_content(chunk_size=128):
-                zf.write(chunk)
+            zf.write(response.content)
 
         # Extract the zip file
         with zipfile.ZipFile(dl_zip_file, "r") as dl_zip:
@@ -120,7 +121,11 @@ class Browser:
             Path(self._driver_parent_dir / "chromedriver.exe").exists(),
         ]):
             logger.info("Installing the chromedriver")
-            self._download_chromedriver(self._get_chrome_version)
+            self._driver_file = self._download_chromedriver(self._get_chrome_version)
+        elif Path(self._driver_parent_dir / "chromedriver").exists():
+            self._driver_file = self._driver_parent_dir / "chromedriver"
+        elif Path(self._driver_parent_dir / "chromedriver.exe").exists():
+            self._driver_file = self._driver_parent_dir / "chromedriver.exe"
 
     def quit(self):
         """Clean up webdriver session. Without this sessions would stack up on system."""
@@ -154,8 +159,8 @@ class Browser:
             sshot_name = f"{logger.name}-{timestamp}.png"
         sshot_folder = self._logs_dir / "screenshots"
         sshot_folder.mkdir(exist_ok=True)
-        img_path = sshot_folder / img_name
+        img_path = sshot_folder / sshot_name
 
         # Take the screenshot and save it to the filename
-        self.driver.save_screenshot(img_path)
+        self.driver.save_screenshot(img_path.__str__())
         logger.info(f"Saved screenshot to {img_path}")
