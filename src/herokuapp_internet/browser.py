@@ -41,7 +41,7 @@ class Browser:
         if self._headless:
             driver_options.add_argument("headless")
         driver_capabilities = webdriver.DesiredCapabilities.CHROME.copy()
-        driver_log_path = self._driver_parent_dir / "chromedriver.log"
+        driver_log_path = f'{self._driver_parent_dir / "chromedriver.log"}'
 
         logger.info("Starting driver...")
         self.driver = webdriver.Chrome(
@@ -114,8 +114,8 @@ class Browser:
     def _install_chromedriver(self):
         """Download and install chromedriver"""
         if not any([
-            Path(self._driver_parent_dir / "chromedriver").exists,
-            Path(self._driver_parent_dir / "chromedriver.exe").exists,
+            Path(self._driver_parent_dir / "chromedriver").exists(),
+            Path(self._driver_parent_dir / "chromedriver.exe").exists(),
         ]):
             logger.info("Installing the chromedriver")
             self._download_chromedriver(self._get_chrome_version)
