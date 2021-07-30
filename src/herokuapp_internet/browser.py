@@ -3,9 +3,11 @@ import selenium
 import platform
 import subprocess
 from pathlib import Path
+import requests
 import logging
 
 logger = logging.getLogger(__name__)
+ROOT_DIR = Path(__file__).absolute().parents[2]
 
 
 class Browser:
@@ -19,6 +21,7 @@ class Browser:
         self._browser = browser
         self._locale = locale
         self._platform = platform.system()
+        self._driver_parent_dir = ROOT_DIR / 'sel_drivers'
 
     def setup_driver(self):
         if self._browser is not 'chrome':
@@ -30,6 +33,12 @@ class Browser:
         if self._platform == 'Linux' or self._platform == 'Darwin':
             output = subprocess.check_output(
                 "google-chrome --version",
+                shell=True
+            )
+            chrome_version = output.decode('utf-8').strip().split()[2]
+        elif self._platform == 'Darwin':
+            output = subprocess.check_output(
+                '/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --version',
                 shell=True
             )
             chrome_version = output.decode('utf-8').strip().split()[2]
@@ -47,6 +56,25 @@ class Browser:
                 )
                 chrome_version = output.decode('utf-8').strip().split('=')[1]
         return chrome_version
+
+    def _download_chromedriver(self, chrome_version):
+        if not chrome_version:  # If no Chrome version is provided we will grab the latest driver
+            chrome_version = requests.get("https://chromedriver.storage.googleapis.com/LATEST_RELEASE").text
+        if self._platform == 'Linux':
+            dl_url = f"https://chromedriver.storage.googleapis.com/{chrome_version}/chromedriver_linux64.zip"
+            driver_filename = 'chromedriver'
+        elif self._platform == 'Darwin':
+            dl_url = f"https://chromedriver.storage.googleapis.com/{chrome_version}/chromedriver_mac64.zip"
+            driver_filename = 'chromedriver'
+        else:
+            dl_url = f"https://chromedriver.storage.googleapis.com/{chrome_version}/chromedriver_win32.zip"
+            driver_filename = 'chromedriver.exe'
+        dl_zip_filename = Path(dl_url).name
+        dl_zip_file = self._driver_parent_dir / dl_zip_filename
+
+        # Download the zip file
+        response = requests.get(dl_url)
+        dl_zip_file.write_bytes(response.content)
         
     def _install_chromedriver(self):
         if self._platform == 'Linux' or self._platform == 'Darwin':
