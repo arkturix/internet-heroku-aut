@@ -136,7 +136,14 @@ class Browser:
             # Driver connection already closed
             pass
 
-    def screenshot(self, img_name=None):
+    def get_page(self, url, port=None):
+        """Get a page"""
+        _url = f"{url}:{port}" if port else url
+        logger.debug(f"Attempting to retrieve url: {_url}")
+        self.driver.get(_url)
+
+    def take_screenshot(self, img_name=None):
+        """Take a screenshot of the current session"""
         # Create screenshot file name
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         if img_name:
