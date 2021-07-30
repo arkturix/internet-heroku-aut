@@ -1,9 +1,11 @@
 # Base class implementing Selenium
+from os import PathLike
 import selenium
 import platform
 import subprocess
 from pathlib import Path
 import requests
+import zipfile
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,6 +24,8 @@ class Browser:
         self._locale = locale
         self._platform = platform.system()
         self._driver_parent_dir = ROOT_DIR / 'sel_drivers'
+        self._driver_file = None
+        self._driver = None
 
     def setup_driver(self):
         if self._browser is not 'chrome':
@@ -57,7 +61,8 @@ class Browser:
                 chrome_version = output.decode('utf-8').strip().split('=')[1]
         return chrome_version
 
-    def _download_chromedriver(self, chrome_version):
+    def _download_chromedriver(self, chrome_version: str) -> Path:
+        """Downloads the chromedriver for the specified version"""
         if not chrome_version:  # If no Chrome version is provided we will grab the latest driver
             chrome_version = requests.get("https://chromedriver.storage.googleapis.com/LATEST_RELEASE").text
         if self._platform == 'Linux':
@@ -75,10 +80,16 @@ class Browser:
         # Download the zip file
         response = requests.get(dl_url)
         dl_zip_file.write_bytes(response.content)
+
+        # Extract the zip file
+        with zipfile.ZipFile(dl_zip_file, 'r') as dl_zip:
+            dl_zip.extract(driver_filename, self._driver_parent_dir)
+
+        return self._driver_parent_dir / driver_filename
         
     def _install_chromedriver(self):
-        if self._platform == 'Linux' or self._platform == 'Darwin':
-            pass
-        else:
-            pass
+        """Download and install chromedriver"""
+        if not Path(self._driver_parent_dir / 'chromedriver').exists or not Path(self._driver_parent_dir / 'chromedriver.exe').exists:
+            logger.info("Installing the chromedriver")
+            self._download_chromedriver(self._get_chrome_version)
 
