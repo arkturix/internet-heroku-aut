@@ -113,10 +113,10 @@ class Browser:
 
     def _install_chromedriver(self):
         """Download and install chromedriver"""
-        if not any(
+        if not any([
             Path(self._driver_parent_dir / "chromedriver").exists,
             Path(self._driver_parent_dir / "chromedriver.exe").exists,
-        ):
+        ]):
             logger.info("Installing the chromedriver")
             self._download_chromedriver(self._get_chrome_version)
 
