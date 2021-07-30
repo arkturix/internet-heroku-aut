@@ -102,8 +102,10 @@ class Browser:
         self._driver_parent_dir.mkdir(exist_ok=True)
 
         # Download the zip file
-        response = requests.get(dl_url)
-        dl_zip_file.write_bytes(response.content)
+        response = requests.get(dl_url, stream=True)
+        with dl_zip_file.open('wb') as zf:
+            for chunk in response.iter_content(chunk_size=128):
+                zf.write(chunk)
 
         # Extract the zip file
         with zipfile.ZipFile(dl_zip_file, "r") as dl_zip:
