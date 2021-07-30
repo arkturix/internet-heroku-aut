@@ -1,0 +1,5 @@
+login_page:
+  username: 'tomsmith'
+  password: 'SuperSecretPassword!'
+  bad_username: 'badusername'
+  bad_password: 'badpassword'
