@@ -26,6 +26,7 @@ class Browser:
         self._driver_file = None
         self.driver = None
         self._headless = headless
+        self.setup_driver()
 
     def __del__(self):
         self.quit()
