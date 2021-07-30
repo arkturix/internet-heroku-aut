@@ -32,6 +32,7 @@ class Browser:
         self.quit()
 
     def setup_driver(self):
+        """Setup the Selenium web driver"""
         if self._browser is not "chrome":
             raise NotImplementedError("Oops! We can't use that browser, yet...")
         self._install_chromedriver()
