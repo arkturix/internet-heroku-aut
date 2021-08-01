@@ -12,7 +12,7 @@ def pytest_addoption(parser):
     )
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def headless_option(request):
     if request.config.getoption("--headless") == "false":
         return False
