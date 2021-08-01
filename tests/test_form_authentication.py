@@ -15,7 +15,7 @@ def test_login_and_logout(login_page, variables):
     login_page.click_login_button()
     logger.info("Logging in...")
     login_page.take_screenshot()
-    assert login_page.login_sucess(), "Login failed"
+    assert login_page.login_success(), "Login failed"
 
     logger.info("Login successful, logging out...")
     login_page.click_logout_button()
