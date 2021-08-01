@@ -1,4 +1,5 @@
 # Base class implementing Selenium
+from requests.api import head
 from requests.models import HTTPError
 from selenium import webdriver
 import platform
@@ -105,7 +106,8 @@ class Browser:
         # Download the zip file
         response = requests.get(dl_url, stream=True)
         with dl_zip_file.open('wb') as zf:
-            zf.write(response.content)
+            for chunk in response.iter_content(chunk_size=128):
+                zf.write(chunk)
 
         # Extract the zip file
         with zipfile.ZipFile(dl_zip_file, "r") as dl_zip:
@@ -120,7 +122,7 @@ class Browser:
             Path(self._driver_parent_dir / "chromedriver.exe").exists(),
         ]):
             logger.info("Installing the chromedriver")
-            self._driver_file = self._download_chromedriver(self._get_chrome_version)
+            self._driver_file = self._download_chromedriver(self._get_chrome_version())
         elif Path(self._driver_parent_dir / "chromedriver").exists():
             self._driver_file = self._driver_parent_dir / "chromedriver"
         elif Path(self._driver_parent_dir / "chromedriver.exe").exists():

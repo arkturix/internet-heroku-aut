@@ -29,15 +29,5 @@ The tests should be platform agnostic and capable of being run on Windows, Mac, 
 
 ---
 
-## Known issues
-
-*Issue:* Automated installation of the chromedriver does not work because of issues with unzipping the file that it is downloaded in.
-
-*Resolution:* Manually copy the chromedriver, binary or executable, into a `sel_drivers/` folder in the repository repo.
-
-*Issue:* Tests on login_page are currently failing unable to find elements.
-
----
-
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
