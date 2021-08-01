@@ -13,3 +13,7 @@ class DisappearingElementsPage(Browser):
     def go_to_page(self):
         """Go to the Disappearing Elements page"""
         self.get_page(self.url)
+
+    def get_menu_items(self):
+        """Get a list of the menu elements"""
+        return self.driver.find_elements_by_css_selector('.example ul li')
