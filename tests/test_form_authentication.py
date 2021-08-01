@@ -36,7 +36,7 @@ def test_bad_username(login_page, variables):
     logger.info("Login failed")
     login_error = login_page.get_error_message()
     assert (
-        login_error == "Your username is invalid!"
+        "Your username is invalid!" in login_error
     ), f"Error message is incorrect: {login_error}"
 
 
@@ -53,5 +53,5 @@ def test_bad_password(login_page, variables):
     logger.info("Login failed")
     login_error = login_page.get_error_message()
     assert (
-        login_error == "Your password is invalid!"
+        "Your password is invalid!" in login_error
     ), f"Error message is incorrect: {login_error}"
