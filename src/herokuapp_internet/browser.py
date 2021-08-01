@@ -97,8 +97,7 @@ class Browser:
         else:
             dl_url = f"https://chromedriver.storage.googleapis.com/{chrome_version}/chromedriver_win32.zip"
             driver_filename = "chromedriver.exe"
-        dl_zip_filename = Path(dl_url).name
-        dl_zip_file = self._driver_parent_dir / dl_zip_filename
+        dl_zip_file = self._driver_parent_dir / Path(dl_url).name
         if dl_zip_file.exists():
             dl_zip_file.unlink()
         self._driver_parent_dir.mkdir(exist_ok=True)
