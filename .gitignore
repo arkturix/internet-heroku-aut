@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+sel_drivers/chromedriver_win32.zip
+
+# Test logs and screenshots
+logs/
+
+# Selenium driver files
+sel_drivers/
