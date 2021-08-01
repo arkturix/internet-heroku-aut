@@ -3,3 +3,10 @@ login_page:
   password: 'SuperSecretPassword!'
   bad_username: 'badusername'
   bad_password: 'badpassword'
+
+disappearing_elements_menu_list: 
+  - Home
+  - About
+  - Contact Us
+  - Portfolio
+  - Gallery
