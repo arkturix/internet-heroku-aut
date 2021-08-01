@@ -1,2 +1,5 @@
+invoke==1.6.0
 requests==2.26.0
+urllib3==1.26.6
+pytest==6.2.4
 selenium==3.141.0

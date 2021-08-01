@@ -19,10 +19,28 @@ Google Chrome is currently the only supported browser, and the chromedriver is r
 
 ## Usage
 
-Run the tests using pytest from a command prompt or terminal. The following is an example command to trigger the tests with the decorator `smoke` when the working directory is the repository root:
+Run the tests via a pyinvoke task by invoking the the runtests command from a command prompt or terminal in the project virtual environment. The following is an example of running this:
 
 ```bash
-python -m pytest --durations=0 --variables=tests\variables.yaml -m smoke tests\
+invoke runtests tests
+```
+
+The default pytest mark used by this command is `smoke`, but other marks could be supplied. More information on the various arguments that could be passed:
+
+```
+Usage: inv[oke] [--core-opts] runtests [--options] [other tasks here ...]
+
+Docstring:
+  Run tests via pytest.
+
+Options:
+  -h STRING, --headless=STRING      Run browser UI tests in headless mode
+  -p STRING, --pytestmarks=STRING   Run tests with the given markers. Default: smoke
+  -t STRING, --tests=STRING         The file or folder from which to run tests
+  -v, --variables                   Path to yaml file from which to use variables. Default: tests/variables.yaml
+  -y STRING, --pytestexprs=STRING   Run tests by the given expressions
+
+
 ```
 
 The tests should be platform agnostic and capable of being run on Windows, Mac, or Linux.

@@ -8,6 +8,7 @@ from pathlib import Path
 import requests
 import zipfile
 from datetime import datetime
+from urllib3.exceptions import MaxRetryError
 import logging
 
 logger = logging.getLogger(__name__)
@@ -131,7 +132,10 @@ class Browser:
     def quit(self):
         """Clean up webdriver session. Without this sessions would stack up on system."""
         logger.debug("Quitting the webdriver session.")
-        self.dump_chrome_console_logs()
+        try:
+            self.dump_chrome_console_logs()
+        except MaxRetryError:
+            pass  # Driver has already quit and we will not be able to grab the logs
         self.driver.quit()
 
     def dump_chrome_console_logs(self):
