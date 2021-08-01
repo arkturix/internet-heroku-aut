@@ -47,5 +47,15 @@ The tests should be platform agnostic and capable of being run on Windows, Mac, 
 
 ---
 
+## Future Work
+
+This project has a lot of potential to show of Python Selenium test skills. Several items should be considered for future work on this project:
+
+- Better logging utility
+- More page objects and test cases for other pages on the site
+- Better test reports
+
+---
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
