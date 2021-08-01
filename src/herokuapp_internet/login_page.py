@@ -57,12 +57,12 @@ class LoginPage(Browser):
 
     def login_failure(self):
         """Determine if login failed by presence of error banner"""
-        error_banner_elem = self.driver.find_element_by_id("#flash.flash.error")
+        error_banner_elem = self.driver.find_element_by_css_selector("#flash.flash.error")
         return error_banner_elem.is_displayed()
 
     def get_error_message(self):
         """Get error message on failure"""
-        error_banner_elem = self.driver.find_element_by_id("#flash.flash.error")
+        error_banner_elem = self.driver.find_element_by_css_selector("#flash.flash.error")
         if error_banner_elem.is_displayed():
             logger.debug(f"Error message displayed: {error_banner_elem.text}")
             return error_banner_elem.text
